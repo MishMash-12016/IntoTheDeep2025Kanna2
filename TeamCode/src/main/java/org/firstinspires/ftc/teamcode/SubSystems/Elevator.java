@@ -16,8 +16,9 @@ import java.util.function.DoubleSupplier;
 public class Elevator extends MMPIDSubsystem {
 
     //System parts:
-    private final CuttleMotor motorLeft;
-    private final CuttleMotor motorRight;
+    private final CuttleMotor motor1;
+    private final CuttleMotor motor2;
+    private final CuttleMotor motor3;
     private final CuttleEncoder motorEncoder;
 
     //constants:
@@ -40,12 +41,10 @@ public class Elevator extends MMPIDSubsystem {
     public Elevator() {
         super(kP, kI, kD, TOLERANCE);
 
+        motor1 = new CuttleMotor(MMRobot.getInstance().mmSystems.controlHub, Configuration.ELEVATOR2);
+        motor2 = new CuttleMotor(MMRobot.getInstance().mmSystems.controlHub, Configuration.ELEVATOR1);
+        motor3 = new CuttleMotor(MMRobot.getInstance().mmSystems.controlHub, Configuration.ELEVATOR3);
 
-
-        motorLeft = new CuttleMotor(MMRobot.getInstance().mmSystems.controlHub, Configuration.ELEVATOR_LEFT);
-        motorRight = new CuttleMotor(MMRobot.getInstance().mmSystems.controlHub, Configuration.ELEVATOR_RIGHT);
-
-        motorLeft.setDirection(Direction.REVERSE);
 
         motorEncoder = new CuttleEncoder(MMRobot.getInstance().mmSystems.controlHub, Configuration.ELEVATOR_ENCODER, TICKS_PER_REV);
 
@@ -67,8 +66,9 @@ public class Elevator extends MMPIDSubsystem {
 
     @Override
     public void setPower(Double power){
-        motorRight.setPower(power);
-        motorLeft.setPower(power);
+        motor1.setPower(power);
+        motor2.setPower(power);
+        motor3.setPower(power);
     }
 
     public double getTicks() {
