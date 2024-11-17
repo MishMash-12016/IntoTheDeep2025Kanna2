@@ -30,4 +30,12 @@ public class ActionCommand implements Command {
     public boolean isFinished() {
         return finished;
     }
+
+    public void run(){
+
+    }
+
+    public void preview(){
+
+    }
 }
