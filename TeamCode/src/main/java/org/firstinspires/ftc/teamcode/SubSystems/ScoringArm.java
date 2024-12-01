@@ -8,19 +8,19 @@ import org.firstinspires.ftc.teamcode.Libraries.CuttlefishFTCBridge.src.devices.
 import org.firstinspires.ftc.teamcode.MMRobot;
 import org.firstinspires.ftc.teamcode.utils.Configuration;
 
-public class IntakeArm extends SubsystemBase {
-    CuttleServo servoLeft;
-    CuttleServo servoRight;
+public class ScoringArm extends SubsystemBase {
+    private final CuttleServo servoLeft;
+    private final CuttleServo servoRight;
 
-    public final double up = 0.5;
-    public final double down = -1.5;
+    public final double up = 1;
+    public final double down = -1;
 
-    public IntakeArm() {
-        servoLeft = new CuttleServo(MMRobot.getInstance().mmSystems.controlHub, Configuration.intakeArmServoLeft);
-        servoRight = new CuttleServo(MMRobot.getInstance().mmSystems.controlHub, Configuration.intakeArmServoRight);
+    public ScoringArm() {
+        servoLeft = new CuttleServo(MMRobot.getInstance().mmSystems.controlHub, Configuration.SERVO_LEFT_SCORING_ARM);
+        servoRight = new CuttleServo(MMRobot.getInstance().mmSystems.controlHub, Configuration.SERVO_RIGHT_SCORING_ARM);
     }
 
-    //tell servo intake to get to down position
+    //Tell arm to get to position
     public Command setPosition(double newPos) {
         return new InstantCommand(()-> {
             servoLeft.setPosition(newPos);

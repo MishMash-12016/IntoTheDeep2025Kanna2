@@ -7,7 +7,6 @@ import com.qualcomm.robotcore.hardware.Gamepad;
 import com.qualcomm.robotcore.hardware.HardwareMap;
 
 import org.firstinspires.ftc.robotcore.external.Telemetry;
-import org.firstinspires.ftc.teamcode.CommandGroup.DriveCommand;
 import org.firstinspires.ftc.teamcode.Libraries.CuttlefishFTCBridge.src.devices.CuttleRevHub;
 import org.firstinspires.ftc.teamcode.Libraries.MMLib.Utils.MMBattery;
 import org.firstinspires.ftc.teamcode.Libraries.MMLib.Utils.MMIMU;
@@ -15,7 +14,7 @@ import org.firstinspires.ftc.teamcode.SubSystems.DriveTrain;
 import org.firstinspires.ftc.teamcode.SubSystems.LinearIntake;
 import org.firstinspires.ftc.teamcode.SubSystems.IntakEndUnit;
 import org.firstinspires.ftc.teamcode.SubSystems.IntakeArm;
-import org.firstinspires.ftc.teamcode.SubSystems.ScoringEndUnit;
+import org.firstinspires.ftc.teamcode.SubSystems.ScoringClawEndUnit;
 import org.firstinspires.ftc.teamcode.SubSystems.Elevator;
 import org.firstinspires.ftc.teamcode.utils.AllianceColor;
 import org.firstinspires.ftc.teamcode.utils.AllianceSide;
@@ -45,7 +44,7 @@ public class MMSystems {
     public LinearIntake linearIntake;
     public IntakEndUnit intakEndUnit;
     public IntakeArm intakeArm;
-    public ScoringEndUnit scoringEndUnit;
+    public ScoringClawEndUnit scoringEndUnit;
     public Elevator elevator;
 
 
@@ -53,7 +52,10 @@ public class MMSystems {
     public void initRobotSystems(){
         driveTrain = new DriveTrain();
         driveTrain.setDefaultCommand(
-                new DriveCommand()
+                MMRobot.getInstance().mmSystems.driveTrain.fieldOrientedDrive(
+                        () -> gamepadEx1.getLeftX(),
+                        () -> gamepadEx1.getLeftY(),
+                        () -> gamepadEx1.getRightX())
         );
 
         elevator = new Elevator();
@@ -61,7 +63,7 @@ public class MMSystems {
 
         this.intakEndUnit = new IntakEndUnit();
         this.intakeArm = new IntakeArm();
-        this.scoringEndUnit = new ScoringEndUnit();
+        this.scoringEndUnit = new ScoringClawEndUnit();
     }
 
 
