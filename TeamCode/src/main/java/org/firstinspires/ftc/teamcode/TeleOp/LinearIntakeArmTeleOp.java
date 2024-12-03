@@ -15,7 +15,7 @@ import org.firstinspires.ftc.teamcode.utils.OpModeType;
 public class LinearIntakeArmTeleOp extends MMOpMode {
     MMRobot robotInstance = MMRobot.getInstance();
 
-    public LinearIntakeArmTeleOp(){
+    public LinearIntakeArmTeleOp() {
         super(OpModeType.NonCompetition.EXPERIMENTING);
     }
 
@@ -23,25 +23,19 @@ public class LinearIntakeArmTeleOp extends MMOpMode {
     public void onInit() {
 
         robotInstance.mmSystems.initRobotSystems();
-        Trigger leftTriggerCondition = new Trigger(
-                () -> robotInstance.mmSystems.gamepadEx1.getTrigger(GamepadKeys.Trigger.LEFT_TRIGGER) > 0.05
-        );
 
         Trigger rightTriggerCondition = new Trigger(
                 () -> robotInstance.mmSystems.gamepadEx1.getTrigger(GamepadKeys.Trigger.RIGHT_TRIGGER) > 0.05
         );
 
-        leftTriggerCondition.whenActive(
-                RobotCommands.IntakeCommand());
-
         rightTriggerCondition.whenActive(
-                RobotCommands.IntakeDoneCommand());
+                robotInstance.mmSystems.intakeArm.setPosition(1).andThen(robotInstance.mmSystems.intakeArm.setPosition(0)));
     }
 
     @Override
     public void run() {
         super.run();
-        telemetry.addData("Joystick Position: ", robotInstance.mmSystems.linearIntake.getPosition());
+        telemetry.addData("Joystick Position: ", robotInstance.mmSystems.gamepadEx1.getTrigger(GamepadKeys.Trigger.LEFT_TRIGGER));
         telemetry.update();
     }
 

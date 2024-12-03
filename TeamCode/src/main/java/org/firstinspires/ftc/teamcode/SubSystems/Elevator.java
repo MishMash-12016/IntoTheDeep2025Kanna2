@@ -37,6 +37,11 @@ public class Elevator extends MMPIDSubsystem {
 
     public final static double LOW_BASKET = 40;
     public final static double HIGH_BASKET = 70;
+    public final static double elevatorDown = 0;
+    public final static double elevatorWallHeight = 3;
+    public final static double highChamber = 4;
+    public final static double highChamberScorePose = 4;
+
 
     public Elevator() {
         super(kP, kI, kD, TOLERANCE);
@@ -54,14 +59,14 @@ public class Elevator extends MMPIDSubsystem {
         resetTicks();
     }
 
-    public Command moveToPose(double setPoint){
-        return new MMPIDCommand(this,setPoint);
+    public Command moveToPose(double setPoint) {
+        return new MMPIDCommand(this, setPoint);
     }
 
-    public Command setPowerByJoystick(DoubleSupplier power){
+    public Command setPowerByJoystick(DoubleSupplier power) {
         return new RunCommand(
-                ()->setPower(power.getAsDouble())
-                ,this);
+                () -> setPower(power.getAsDouble())
+                , this);
     }
 
     @Override
@@ -74,18 +79,21 @@ public class Elevator extends MMPIDSubsystem {
     public double getTicks() {
         return motorEncoder.getCounts() + ticksOffset;
     }
+
     public void setTicks(double newTicks) {
         ticksOffset = newTicks - motorEncoder.getCounts();
     }
+
     public void resetTicks() {
         setTicks(0);
     }
 
-    public double getHeight(){
+
+    public double getHeight() {
         //getTicks-> current ticks value(current position of the encoder)
         //SPROCKET_PERIMETER -> gear diameter
         //LEVELS -> how many elevator levels there is
-        return -1*((getTicks() / TICKS_PER_REV) * SPROCKET_PERIMETER * LEVELS / GEAR_RATIO) ;
+        return -1 * ((getTicks() / TICKS_PER_REV) * SPROCKET_PERIMETER * LEVELS / GEAR_RATIO);
     }
 
     @Override
@@ -99,7 +107,7 @@ public class Elevator extends MMPIDSubsystem {
     }
 
     @Override
-    public void stop(){
+    public void stop() {
         setPower(0.0);
     }
 

@@ -16,13 +16,13 @@ public class IntakEndUnit extends SubsystemBase {
 
     // claw close or open
     public IntakEndUnit() {
-        clawIntakeServo = new CuttleServo(MMRobot.getInstance().mmSystems.controlHub, Configuration.clawIntakeServo);
+        clawIntakeServo = new CuttleServo(MMRobot.getInstance().mmSystems.controlHub, Configuration.CLAW_INTAKE_SERVO);
     }
-    public Command openClaw() {
+    public Command openIntakeClaw() {
         return new InstantCommand(() -> clawIntakeServo.setPosition(open), this);
     }
 
-    public Command closeClaw() {
+    public Command closeIntakeClaw() {
         return new InstantCommand(() -> clawIntakeServo.setPosition(close), this);
     }
 }

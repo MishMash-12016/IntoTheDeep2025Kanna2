@@ -14,8 +14,10 @@ import org.firstinspires.ftc.teamcode.SubSystems.DriveTrain;
 import org.firstinspires.ftc.teamcode.SubSystems.LinearIntake;
 import org.firstinspires.ftc.teamcode.SubSystems.IntakEndUnit;
 import org.firstinspires.ftc.teamcode.SubSystems.IntakeArm;
-import org.firstinspires.ftc.teamcode.SubSystems.ScoringClawEndUnit;
+import org.firstinspires.ftc.teamcode.SubSystems.LinearIntakeEndUnitRotator;
 import org.firstinspires.ftc.teamcode.SubSystems.Elevator;
+import org.firstinspires.ftc.teamcode.SubSystems.ScoringArm;
+import org.firstinspires.ftc.teamcode.SubSystems.ScoringClawEndUnit;
 import org.firstinspires.ftc.teamcode.utils.AllianceColor;
 import org.firstinspires.ftc.teamcode.utils.AllianceSide;
 import org.firstinspires.ftc.teamcode.utils.OpModeType;
@@ -44,12 +46,15 @@ public class MMSystems {
     public LinearIntake linearIntake;
     public IntakEndUnit intakEndUnit;
     public IntakeArm intakeArm;
-    public ScoringClawEndUnit scoringEndUnit;
+    public LinearIntakeEndUnitRotator linearIntakeEndUnitRotator;
+
+    public ScoringArm scoringArm;
+    public ScoringClawEndUnit scoringClawEndUnit;
     public Elevator elevator;
 
 
     //creating and initiating all subsystems
-    public void initRobotSystems(){
+    public void initRobotSystems() {
         driveTrain = new DriveTrain();
         driveTrain.setDefaultCommand(
                 MMRobot.getInstance().mmSystems.driveTrain.fieldOrientedDrive(
@@ -63,17 +68,19 @@ public class MMSystems {
 
         this.intakEndUnit = new IntakEndUnit();
         this.intakeArm = new IntakeArm();
-        this.scoringEndUnit = new ScoringClawEndUnit();
-    }
+        this.scoringArm = new ScoringArm();
+        this.scoringClawEndUnit = new ScoringClawEndUnit();
+        linearIntakeEndUnitRotator = new LinearIntakeEndUnitRotator();
 
+    }
 
 
     public MMSystems(OpModeType type, HardwareMap hardwareMap, Gamepad gamepad1, Gamepad gamepad2, Telemetry telemetry) {
         this.opModeType = type;
         this.hardwareMap = hardwareMap;
         this.controlHub = new CuttleRevHub(hardwareMap, CuttleRevHub.HubTypes.CONTROL_HUB);
-        if(type != OpModeType.NonCompetition.EXPERIMENTING_NO_EXPANSION) {
-            this.expansionHub = new CuttleRevHub(hardwareMap, "Expansion Hub 2");
+        if (type != OpModeType.NonCompetition.EXPERIMENTING_NO_EXPANSION) {
+            this.expansionHub = new CuttleRevHub(hardwareMap, "Expansion Hub 1");
         }
         this.gamepadEx1 = new GamepadEx(gamepad1);
         this.gamepadEx2 = new GamepadEx(gamepad2);

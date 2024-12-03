@@ -105,7 +105,7 @@ public class DriveTrain extends SubsystemBase {
                     Vector2d joystickDirection = new Vector2d(x.getAsDouble(), y.getAsDouble());
                     Vector2d fieldOrientedVector = joystickDirection.rotateBy(-mmRobot.mmSystems.imu.getYawInDegrees());
                     drive(fieldOrientedVector.getX(), fieldOrientedVector.getY(), yaw.getAsDouble());
-                });
+                }, this);
     }
 
 
