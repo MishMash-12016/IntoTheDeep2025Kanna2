@@ -1,9 +1,7 @@
 package org.firstinspires.ftc.teamcode.SubSystems;
 
 import com.arcrobotics.ftclib.command.Command;
-import com.arcrobotics.ftclib.command.CommandScheduler;
 import com.arcrobotics.ftclib.command.InstantCommand;
-import com.arcrobotics.ftclib.command.ParallelCommandGroup;
 import com.arcrobotics.ftclib.command.RunCommand;
 import com.arcrobotics.ftclib.command.SubsystemBase;
 import org.firstinspires.ftc.teamcode.Libraries.CuttlefishFTCBridge.src.devices.CuttleServo;
@@ -20,30 +18,26 @@ public class LinearIntake extends SubsystemBase {
     private final CuttleServo servoRight;
 
     public LinearIntake(){
-        servoLeft = new CuttleServo(robotInstance.mmSystems.controlHub, Configuration.LEFT_INTAKE);
-        servoRight = new CuttleServo(robotInstance.mmSystems.expansionHub, Configuration.RIGHT_INTAKE);
+        servoLeft = new CuttleServo(robotInstance.mmSystems.controlHub, Configuration.LEFT_LINEAR_INTAKE);
+        servoRight = new CuttleServo(robotInstance.mmSystems.controlHub, Configuration.RIGHT_LINEAR_INTAKE);
 
-        servoRight.setPosition(0);
-        servoLeft.setPosition(0);
-
-        this.setDefaultCommand(setPosition(0).perpetually());
     }
 
     public Command setPosition(double newPos){
         return new InstantCommand(()-> {
-            servoLeft.setPosition(1 - newPos);
-            servoRight.setPosition(newPos);} ,
+            servoLeft.setPosition(newPos);
+            servoRight.setPosition(1-newPos);} ,
                 this);
     }
 
     public Command setPositionByJoystick(DoubleSupplier doubleSupplier){
         return new RunCommand(()-> {
-            servoLeft.setPosition(1 - doubleSupplier.getAsDouble());
-            servoRight.setPosition(doubleSupplier.getAsDouble());} ,
+            servoLeft.setPosition(doubleSupplier.getAsDouble());
+            servoRight.setPosition(1 - doubleSupplier.getAsDouble());} ,
                 this);
     }
 
     public String getPosition(){
-        return String.valueOf(servoLeft.getPosition())+String.valueOf(servoRight.getPosition()) ;
+        return String.valueOf(servoLeft.getPosition())+" "+String.valueOf(servoRight.getPosition()) ;
     }
 }

@@ -23,9 +23,9 @@ public class Elevator extends MMPIDSubsystem {
 
     //constants:
     private final double TICKS_PER_REV = 537.7;
-    private final double GEAR_RATIO = 2;
+    private final double GEAR_RATIO = 1;
     private final double LEVELS = 4;
-    private final double SPROCKET_PERIMETER = 6.56592;
+    private final double SPROCKET_PERIMETER = 12.9;
 
     //PID:
     public static final double kP = 0.16;
@@ -37,16 +37,22 @@ public class Elevator extends MMPIDSubsystem {
 
     public final static double LOW_BASKET = 40;
     public final static double HIGH_BASKET = 70;
+    public final static double elevatorDown = 0;
+    public final static double elevatorWallHeight = 3;
+    public final static double highChamber = 4;
+    public final static double highChamberScorePose = 4;
+
+    public static double targetPose = 0;
 
     public Elevator() {
         super(kP, kI, kD, TOLERANCE);
 
-        motor1 = new CuttleMotor(MMRobot.getInstance().mmSystems.controlHub, Configuration.ELEVATOR2);
-        motor2 = new CuttleMotor(MMRobot.getInstance().mmSystems.controlHub, Configuration.ELEVATOR1);
-        motor3 = new CuttleMotor(MMRobot.getInstance().mmSystems.controlHub, Configuration.ELEVATOR3);
+        motor1 = new CuttleMotor(MMRobot.getInstance().mmSystems.expansionHub, Configuration.ELEVATOR1);
+        motor2 = new CuttleMotor(MMRobot.getInstance().mmSystems.expansionHub, Configuration.ELEVATOR2);
+        motor3 = new CuttleMotor(MMRobot.getInstance().mmSystems.expansionHub, Configuration.ELEVATOR3);
 
 
-        motorEncoder = new CuttleEncoder(MMRobot.getInstance().mmSystems.controlHub, Configuration.ELEVATOR_ENCODER, TICKS_PER_REV);
+        motorEncoder = new CuttleEncoder(MMRobot.getInstance().mmSystems.expansionHub, Configuration.ELEVATOR_ENCODER, TICKS_PER_REV);
 
 //        this.motorLeft.setZeroPowerBehaviour(DcMotor.ZeroPowerBehavior.BRAKE);
 //        this.motorRight.setZeroPowerBehaviour(DcMotor.ZeroPowerBehavior.BRAKE);
@@ -54,14 +60,15 @@ public class Elevator extends MMPIDSubsystem {
         resetTicks();
     }
 
-    public Command moveToPose(double setPoint){
-        return new MMPIDCommand(this,setPoint);
+    public Command moveToPose(double setPoint) {
+        targetPose = setPoint;
+        return new MMPIDCommand(this, setPoint);
     }
 
-    public Command setPowerByJoystick(DoubleSupplier power){
+    public Command setPowerByJoystick(DoubleSupplier power) {
         return new RunCommand(
-                ()->setPower(power.getAsDouble())
-                ,this);
+                () -> setPower(power.getAsDouble())
+                , this);
     }
 
     @Override
@@ -74,18 +81,21 @@ public class Elevator extends MMPIDSubsystem {
     public double getTicks() {
         return motorEncoder.getCounts() + ticksOffset;
     }
+
     public void setTicks(double newTicks) {
         ticksOffset = newTicks - motorEncoder.getCounts();
     }
+
     public void resetTicks() {
         setTicks(0);
     }
 
-    public double getHeight(){
+
+    public double getHeight() {
         //getTicks-> current ticks value(current position of the encoder)
         //SPROCKET_PERIMETER -> gear diameter
         //LEVELS -> how many elevator levels there is
-        return -1*((getTicks() / TICKS_PER_REV) * SPROCKET_PERIMETER * LEVELS / GEAR_RATIO) ;
+        return -1 * ((getTicks() / TICKS_PER_REV) * SPROCKET_PERIMETER * LEVELS / GEAR_RATIO);
     }
 
     @Override
@@ -95,11 +105,11 @@ public class Elevator extends MMPIDSubsystem {
 
     @Override
     public double getFeedForwardPower() {
-        return 0.0;
+        return 0.0 * Math.signum(targetPose - getHeight());
     }
 
     @Override
-    public void stop(){
+    public void stop() {
         setPower(0.0);
     }
 

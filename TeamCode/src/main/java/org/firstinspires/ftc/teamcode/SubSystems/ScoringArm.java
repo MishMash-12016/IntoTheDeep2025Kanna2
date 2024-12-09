@@ -12,11 +12,14 @@ public class ScoringArm extends SubsystemBase {
     private final CuttleServo servoLeft;
     private final CuttleServo servoRight;
 
-    public final double up = 1;
-    public final double down = -1;
+    public final static double up = 1;
+    public final static double down = -1;
+    public final static double  scoreSpecimen= 2;
+    public final static double scoringArmHold= 3;
+    public final static double scoreSample= 45;
 
     public ScoringArm() {
-        servoLeft = new CuttleServo(MMRobot.getInstance().mmSystems.controlHub, Configuration.SERVO_LEFT_SCORING_ARM);
+        servoLeft = new CuttleServo(MMRobot.getInstance().mmSystems.expansionHub, Configuration.SERVO_LEFT_SCORING_ARM);
         servoRight = new CuttleServo(MMRobot.getInstance().mmSystems.controlHub, Configuration.SERVO_RIGHT_SCORING_ARM);
     }
 
