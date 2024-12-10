@@ -10,7 +10,6 @@ import org.firstinspires.ftc.teamcode.utils.OpModeType;
 
 @TeleOp
 public class ClimbingTeleOp extends MMOpMode {
-
     public ClimbingTeleOp() {
         super(OpModeType.NonCompetition.EXPERIMENTING_NO_EXPANSION);
     }
